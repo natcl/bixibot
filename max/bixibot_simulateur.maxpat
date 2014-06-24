@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 188.0, 44.0, 1054.0, 531.0 ],
+		"rect" : [ 276.0, 44.0, 1054.0, 531.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -2991,7 +2991,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 171.0, 76.0, 63.0, 20.0 ],
-					"text" : "delay 100"
+					"text" : "delay 500"
 				}
 
 			}
@@ -3416,7 +3416,7 @@
 					"maxclass" : "led",
 					"numinlets" : 1,
 					"numoutlets" : 1,
-					"offcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"offcolor" : [ 1.0, 0.0, 0.0, 1.0 ],
 					"oncolor" : [ 0.0, 1.0, 0.0, 1.0 ],
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
@@ -3430,7 +3430,7 @@
 					"maxclass" : "led",
 					"numinlets" : 1,
 					"numoutlets" : 1,
-					"offcolor" : [ 1.0, 0.0, 0.0, 1.0 ],
+					"offcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 					"oncolor" : [ 0.0, 1.0, 0.0, 1.0 ],
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
