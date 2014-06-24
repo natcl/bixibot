@@ -25,6 +25,7 @@ class index:
 
 class station:
     def GET(self):
+        web.header('Content-Type', 'application/json')
         return update_station()
         
 def init_station():
