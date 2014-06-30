@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import web
+import requests
 import re
 from urllib2 import urlopen
 import xml.etree.cElementTree as ET
@@ -26,7 +27,12 @@ class index:
 class station:
     def GET(self):
         web.header('Content-Type', 'application/json')
-        return update_station()
+        state = ''
+        data = update_station()
+        for c in json.loads(data)[::-1]:
+            state += str(c)
+        update_spark(state)
+        return data 
         
 def init_station():
     if not os.path.exists('bixi.json'):
@@ -161,6 +167,16 @@ def get_station_info(query):
             return result
         else:
             return 'Station inexistante'
+
+def update_spark(state):
+    access_token = "510a78acafff2f5e8183147ee6789c7afe29ec8f"
+    device_id = "55ff74065075555334280287"
+
+    address = 'https://api.spark.io/v1/devices/{0}/update/'.format(device_id)
+    data = {'access_token': access_token, 'args': state}
+
+    r = requests.post(address, data=data)
+
  
 if __name__ == "__main__":
     app.run()
