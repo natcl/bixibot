@@ -157,7 +157,6 @@ void set_all_leds(byte r, byte g, byte b)
 void loop() {
     
     if (digitalRead(buttonPin) == HIGH) {
-        set_all_leds(0,0,0);
-        lastCommand = "000000000000000";
+        updateLeds("000000000000000");
     }
 }
