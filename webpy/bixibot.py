@@ -29,7 +29,7 @@ class station:
         web.header('Content-Type', 'application/json')
         state = ''
         data = update_station()
-        for c in json.loads(data)[::-1]:
+        for c in json.loads(data):
             state += str(c)
         update_spark(state)
         return data 
