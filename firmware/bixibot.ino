@@ -1,4 +1,7 @@
 // This #include statement was automatically added by the Spark IDE.
+#include "clickButton/clickButton.h"
+
+// This #include statement was automatically added by the Spark IDE.
 #include "elapsedMillis/elapsedMillis.h"
 
 // This #include statement was automatically added by the Spark IDE.
@@ -23,6 +26,9 @@ elapsedMillis timeElapsed;
 int fadeTime = 2000;
 String lastCommand = "000000000000000";
 
+ClickButton button(buttonPin, HIGH);
+int buttonResult = 0;
+
 
 void setup() {
     Spark.function("update", updateLeds);
@@ -35,6 +41,10 @@ void setup() {
     pinMode(bluePin, OUTPUT);
     
     pinMode(buttonPin, INPUT_PULLDOWN);
+    
+    button.debounceTime   = 20;   // Debounce timer in ms
+    button.multiclickTime = 250;  // Time limit for multi clicks
+    button.longClickTime  = 1000; // time until "held-down clicks" register
     
     analogWrite(redPin, 255);
     analogWrite(greenPin, 255);
@@ -117,19 +127,19 @@ int updateLeds(String command)
                 
                 // before encoder
                 if (led < 7)
-                    strip.setPixelColor(numLeds - 2 - led, map(timeElapsed, 0, fadeTime, redFrom, redTo), map(timeElapsed, 0, fadeTime, greenFrom, greenTo), 0);
+                    strip.setPixelColor(numLeds - 2 - led, map(timeElapsed, 0, fadeTime-1, redFrom, redTo), map(timeElapsed, 0, fadeTime-1, greenFrom, greenTo), 0);
                 
                 // If led is encoder
                 if (led == 7)
                 {
-                    analogWrite(redPin, map(timeElapsed, 0, fadeTime, 255-redFrom, 255-redTo));
-                    analogWrite(greenPin, map(timeElapsed, 0, fadeTime, 255-greenFrom, 255-greenTo));
+                    analogWrite(redPin, map(timeElapsed, 0, fadeTime-1, 255-redFrom, 255-redTo));
+                    analogWrite(greenPin, map(timeElapsed, 0, fadeTime-1, 255-greenFrom, 255-greenTo));
                     analogWrite(bluePin, 255);
                 }
 
                 // after encoder
                 if (led > 7)
-                    strip.setPixelColor((numLeds - led) - 1, map(timeElapsed, 0, fadeTime, redFrom, redTo), map(timeElapsed, 0, fadeTime, greenFrom, greenTo), 0);
+                    strip.setPixelColor((numLeds - led) - 1, map(timeElapsed, 0, fadeTime-1, redFrom, redTo), map(timeElapsed, 0, fadeTime-1, greenFrom, greenTo), 0);
             }
         }
         strip.show();
@@ -156,7 +166,9 @@ void set_all_leds(byte r, byte g, byte b)
 
 void loop() {
     
-    if (digitalRead(buttonPin) == HIGH) {
-        updateLeds("000000000000000");
-    }
+    button.Update();
+    if (button.clicks != 0) buttonResult = button.clicks;
+    if (buttonResult == -1) updateLeds("000000000000000");
+    
+    buttonResult = 0;
 }
