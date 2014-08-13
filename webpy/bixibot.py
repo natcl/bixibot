@@ -19,6 +19,9 @@ urls = (
 
 app = web.application(urls, globals())
 
+with open('spark_auth.json', 'r') as f:
+    spark_auth = json.loads(f.read())
+
 class index:
     def GET(self):
         bikes, stations = get_station_info('Saint-Laurent / Guizot')
@@ -169,8 +172,8 @@ def get_station_info(query):
             return 'Station inexistante'
 
 def update_spark(state):
-    access_token = "510a78acafff2f5e8183147ee6789c7afe29ec8f"
-    device_id = "55ff74065075555334280287"
+    access_token = spark_auth['access_token']
+    device_id = spark_auth['device_id']
 
     address = 'https://api.spark.io/v1/devices/{0}/update/'.format(device_id)
     data = {'access_token': access_token, 'args': state}
