@@ -1,1 +1,79 @@
-[{"id":"505b82f1.afa47c","type":"http request","name":"Get BixiBot stations","method":"GET","url":"http://bixibot.studioimaginaire.com/station","x":258.50000762939453,"y":467.00000762939453,"z":"2ec1797b.d13e86","wires":[["e875b388.178a5"]]},{"id":"9ba33420.645cc8","type":"inject","name":"Update","topic":"","payload":"","payloadType":"none","repeat":"300","crontab":"","once":false,"x":82.75000762939453,"y":466.00000762939453,"z":"2ec1797b.d13e86","wires":[["505b82f1.afa47c"]]},{"id":"e875b388.178a5","type":"json","name":"","x":428.75000762939453,"y":467.00000762939453,"z":"2ec1797b.d13e86","wires":[["eee2beb7.111d4"]]},{"id":"a547db52.5ab828","type":"http request","name":"Bixi POST","method":"POST","url":"https://api.spark.io/v1/devices/xxxxxxxxxx/update","x":722.5000114440918,"y":467.50000762939453,"z":"2ec1797b.d13e86","wires":[["32e92aa3.cd16d6"]]},{"id":"eee2beb7.111d4","type":"function","name":"Bixi parse","func":"var str = \"\";\nfor (var c in msg.payload)\n{\n\tstr+=msg.payload[c];\n}\n\nmsg.headers = {'Content-Type' : 'application/x-www-form-urlencoded'};\nmsg.payload = {'access_token': 'xxxxxxxxxx',\n'args' : str};\nreturn msg;","outputs":1,"x":573.7500076293945,"y":467.50000762939453,"z":"2ec1797b.d13e86","wires":[["a547db52.5ab828"]]}]
+[
+    {
+        "id": "505b82f1.afa47c",
+        "method": "GET",
+        "name": "Get BixiBot stations",
+        "type": "http request",
+        "url": "http://bixibot.studioimaginaire.com/station",
+        "wires": [
+            [
+                "e875b388.178a5"
+            ]
+        ],
+        "x": 258.50000762939453,
+        "y": 467.00000762939453,
+        "z": "2ec1797b.d13e86"
+    },
+    {
+        "crontab": "",
+        "id": "9ba33420.645cc8",
+        "name": "Update",
+        "once": false,
+        "payload": "",
+        "payloadType": "none",
+        "repeat": "300",
+        "topic": "",
+        "type": "inject",
+        "wires": [
+            [
+                "505b82f1.afa47c"
+            ]
+        ],
+        "x": 82.75000762939453,
+        "y": 466.00000762939453,
+        "z": "2ec1797b.d13e86"
+    },
+    {
+        "id": "e875b388.178a5",
+        "name": "",
+        "type": "json",
+        "wires": [
+            [
+                "eee2beb7.111d4"
+            ]
+        ],
+        "x": 428.75000762939453,
+        "y": 467.00000762939453,
+        "z": "2ec1797b.d13e86"
+    },
+    {
+        "id": "a547db52.5ab828",
+        "method": "POST",
+        "name": "Bixi POST",
+        "type": "http request",
+        "url": "https://api.spark.io/v1/devices/xxxxxxxxxx/update",
+        "wires": [
+            [
+                "32e92aa3.cd16d6"
+            ]
+        ],
+        "x": 722.5000114440918,
+        "y": 467.50000762939453,
+        "z": "2ec1797b.d13e86"
+    },
+    {
+        "func": "var str = \"\";\nfor (var c in msg.payload)\n{\n\tstr+=msg.payload[c];\n}\n\nmsg.headers = {'Content-Type' : 'application/x-www-form-urlencoded'};\nmsg.payload = {'access_token': 'xxxxxxxxxx',\n'args' : str};\nreturn msg;",
+        "id": "eee2beb7.111d4",
+        "name": "Bixi parse",
+        "outputs": 1,
+        "type": "function",
+        "wires": [
+            [
+                "a547db52.5ab828"
+            ]
+        ],
+        "x": 573.7500076293945,
+        "y": 467.50000762939453,
+        "z": "2ec1797b.d13e86"
+    }
+]
