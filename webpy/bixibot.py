@@ -34,7 +34,7 @@ class station:
         data = update_station()
         for c in json.loads(data):
             state += str(c)
-        update_spark(state)
+        #update_spark(state)
         return data 
         
 def init_station():
