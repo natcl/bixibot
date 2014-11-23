@@ -24,8 +24,11 @@ with open('spark_auth.json', 'r') as f:
 
 class index:
     def GET(self):
-        bikes, stations = get_station_info('Saint-Laurent / Guizot')
-        return 'Velos: {0} Stations: {1}'.format(bikes, stations)
+        if get_station_info('Saint-Laurent / Guizot'):
+            bikes, stations = get_station_info('Saint-Laurent / Guizot')
+            return 'Velos: {0} Stations: {1}'.format(bikes, stations)
+        else:
+            return 'No data'
 
 class station:
     def GET(self):
@@ -41,7 +44,11 @@ def init_station():
     if not os.path.exists('bixi.json'):
         tableau = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
         index_list = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-        bikes, stations = get_station_info('Saint-Laurent / Guizot')
+        station_info = get_station_info('Saint-Laurent / Guizot')
+        if station_info:
+            bikes, stations = station_info
+        else:
+            bikes, stations = (0, 0)
         lockedStations = numStations - (bikes + stations)
 
         for x in range(bikes):
@@ -80,7 +87,12 @@ def update_station():
             if v == 2:
                 locked_index.append(i)
 
-        bikes, stations = get_station_info('Saint-Laurent / Guizot')
+        
+        station_info = get_station_info('Saint-Laurent / Guizot')
+        if station_info:
+            bikes, stations = station_info
+        else:
+            bikes, stations = (0, 0)
         lockedStations = numStations - (bikes + stations)
         
         previous_bikes = len(bikes_index)
@@ -166,10 +178,9 @@ def get_station_info(query):
                         found = True
                         result = (int(nbBikes), int(nbEmptyDocks))
         if (found):
-            #return (5,10)
             return result
         else:
-            return 'Station inexistante'
+            return False
 
 def update_spark(state):
     access_token = spark_auth['access_token']
