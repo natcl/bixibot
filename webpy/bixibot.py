@@ -20,9 +20,6 @@ urls = (
 
 app = web.application(urls, globals())
 
-with open('spark_auth.json', 'r') as f:
-    spark_auth = json.loads(f.read())
-
 class index:
     def GET(self):
         if get_station_info(STATION):
@@ -39,8 +36,8 @@ class station:
         for c in json.loads(data):
             state += str(c)
         #update_spark(state)
-        return data 
-        
+        return data
+
 def init_station():
     if not os.path.exists('bixi.json'):
         tableau = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
@@ -56,12 +53,12 @@ def init_station():
             index = random.choice(index_list)
             index_list.remove(index)
             tableau[index] = 1
-        
+
         for x in range(stations):
             index = random.choice(index_list)
             index_list.remove(index)
             tableau[index] = 0
-        
+
         for x in range(lockedStations):
             index = random.choice(index_list)
             index_list.remove(index)
@@ -75,11 +72,11 @@ def update_station():
     if os.path.exists('bixi.json'):
         with open('bixi.json', 'r') as f:
             previous_state = json.loads(f.read())
-        
+
         stations_index = []
         bikes_index = []
         locked_index = []
-        
+
         for (i, v) in enumerate(previous_state):
             if v == 0:
                 stations_index.append(i)
@@ -88,18 +85,18 @@ def update_station():
             if v == 2:
                 locked_index.append(i)
 
-        
+
         station_info = get_station_info(STATION)
         if station_info:
             bikes, stations = station_info
         else:
             bikes, stations = (0, 0)
         lockedStations = numStations - (bikes + stations)
-        
+
         previous_bikes = len(bikes_index)
         previous_stations = len(stations_index)
         previous_locked = len(locked_index)
-        
+
         if previous_stations == stations and previous_bikes == bikes and previous_locked == lockedStations:
             return json.dumps(previous_state)
 
@@ -146,7 +143,7 @@ def update_station():
         with open('bixi.json', 'w') as f:
             f.write(json.dumps(previous_state))
         return json.dumps(previous_state)
-    
+
     else:
         init_station()
 
@@ -154,8 +151,8 @@ def update_station():
 def get_station_info(query):
     streetNames = query.lower().replace(' ', '').split('/')
     found = False
-        
-    for URL in ["https://montreal.bixi.com/data/bikeStations.xml"]:
+
+    for URL in ["http://montreal.bixi.com/data/bikeStations.xml"]:
         feed = urlopen(URL)
         tree = ET.parse(feed)
         for station in tree.getroot().findall("station"):
@@ -183,15 +180,5 @@ def get_station_info(query):
         else:
             return False
 
-def update_spark(state):
-    access_token = spark_auth['access_token']
-    device_id = spark_auth['device_id']
-
-    address = 'https://api.spark.io/v1/devices/{0}/update/'.format(device_id)
-    data = {'access_token': access_token, 'args': state}
-
-    r = requests.post(address, data=data)
-
- 
 if __name__ == "__main__":
     app.run()
