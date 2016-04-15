@@ -10,6 +10,7 @@ import json
 import random
 import os
 
+STATION = 'Guizot / Saint-Laurent'
 numStations = 15
 
 urls = (
@@ -24,8 +25,8 @@ with open('spark_auth.json', 'r') as f:
 
 class index:
     def GET(self):
-        if get_station_info('Saint-Laurent / Guizot'):
-            bikes, stations = get_station_info('Saint-Laurent / Guizot')
+        if get_station_info(STATION):
+            bikes, stations = get_station_info(STATION)
             return 'Velos: {0} Stations: {1}'.format(bikes, stations)
         else:
             return 'No data'
@@ -44,7 +45,7 @@ def init_station():
     if not os.path.exists('bixi.json'):
         tableau = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
         index_list = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-        station_info = get_station_info('Saint-Laurent / Guizot')
+        station_info = get_station_info(STATION)
         if station_info:
             bikes, stations = station_info
         else:
@@ -88,7 +89,7 @@ def update_station():
                 locked_index.append(i)
 
         
-        station_info = get_station_info('Saint-Laurent / Guizot')
+        station_info = get_station_info(STATION)
         if station_info:
             bikes, stations = station_info
         else:
