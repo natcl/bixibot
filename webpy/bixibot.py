@@ -10,7 +10,7 @@ import json
 import random
 import os
 
-STATION = 'Guizot / Saint-Laurent'
+STATION = 'Guizot / St-Laurent'
 numStations = 15
 
 urls = (
